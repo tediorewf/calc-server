@@ -64,18 +64,18 @@ class ProcessClient(protocol.Protocol):
 
         answer = None
 
-        if operation in ('ADD', '+'):
+        if operation == '+':
             answer = parsed_operand1 + parsed_operand2
-        elif operation in ('MUL', '*'):
+        elif operation == '*':
             answer = parsed_operand1 * parsed_operand2
-        elif operation in ('SUB', '-'):
+        elif operation == '-':
             answer = parsed_operand1 - parsed_operand2
-        elif operation in ('DIV', '/'):
+        elif operation == '/':
             try:
                 answer = parsed_operand1 / parsed_operand2
             except ZeroDivisionError:
                 pass
-        elif operation == 'MOV':
+        elif operation == '=':
             if operand1.isidentifier():
                 answer = self.sharedVariables[operand1] = parsed_operand2
 
