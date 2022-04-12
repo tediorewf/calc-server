@@ -8,4 +8,4 @@ RUN pip install twisted
 
 COPY server.py .
 
-CMD python server.py
+CMD ./server.py
