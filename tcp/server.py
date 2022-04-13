@@ -94,7 +94,7 @@ class ProcessClient(protocol.Protocol):
             parsed = self.sharedVariables.get(operand) or None
         else:
             try:
-                parsed = int(operand)
+                parsed = float(operand)
             except ValueError:
                 parsed = None
 
