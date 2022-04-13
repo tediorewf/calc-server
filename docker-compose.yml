@@ -13,4 +13,3 @@ services:
       dockerfile: Dockerfile
     ports:
       - "28563:28563"
-
