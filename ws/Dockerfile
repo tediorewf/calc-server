@@ -1,4 +1,6 @@
-FROM ruby:2.7
+FROM ruby:2.7-alpine
+
+RUN apk add g++ make
 
 WORKDIR /usr/src/app
 
