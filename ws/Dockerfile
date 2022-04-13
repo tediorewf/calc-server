@@ -1,4 +1,4 @@
-FROM ruby:2.7-alpine
+FROM ruby:2-alpine
 
 RUN apk add g++ make
 
