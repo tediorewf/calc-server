@@ -74,7 +74,7 @@ class ProcessClient(protocol.Protocol):
             try:
                 answer = parsed_operand1 / parsed_operand2
             except ZeroDivisionError:
-                pass
+                answer = float('infinity')
         elif operation == '=':
             if operand1.isidentifier():
                 answer = self.sharedVariables[operand1] = parsed_operand2
