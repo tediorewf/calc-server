@@ -7,7 +7,7 @@ from twisted.internet import reactor, protocol, endpoints
 
 
 VARIABLE_NAME_PATTERN = r'^[a-zA-Z_][a-zA-Z_0-9]*$'
-variable_regexp = re.compile(VARIABLE_NAME_PATTERN)
+variable_name_regexp = re.compile(VARIABLE_NAME_PATTERN)
 
 
 class ProcessClient(protocol.Protocol):
@@ -105,7 +105,7 @@ class ProcessClient(protocol.Protocol):
         return parsed
 
     def __isVariableName(self, candidate) -> bool:
-        return bool(variable_regexp.match(candidate))
+        return bool(variable_name_regexp.match(candidate))
 
 
 class Server(protocol.Factory):
