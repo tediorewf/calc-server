@@ -1,8 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 import socket
+import re
 
 from twisted.internet import reactor, protocol, endpoints
+
+
+VARIABLE_NAME_PATTERN = r'^[a-zA-Z_][a-zA-Z_0-9]*$'
+variable_regexp = re.compile(VARIABLE_NAME_PATTERN)
 
 
 class ProcessClient(protocol.Protocol):
@@ -75,7 +80,7 @@ class ProcessClient(protocol.Protocol):
             except ZeroDivisionError:
                 answer = float('infinity')
         elif operation == '=':
-            if operand1.isidentifier():
+            if self.__isVariableName(operand1):
                 answer = self.server.sharedVariables[operand1] = parsed_operand2
 
         return answer
@@ -89,7 +94,7 @@ class ProcessClient(protocol.Protocol):
         )
 
     def __parseOperand(self, operand: str) -> int or None:
-        if operand.isidentifier():
+        if self.__isVariableName(operand):
             parsed = self.server.sharedVariables.get(operand) or None
         else:
             try:
@@ -98,6 +103,9 @@ class ProcessClient(protocol.Protocol):
                 parsed = None
 
         return parsed
+
+    def __isVariableName(self, candidate) -> bool:
+        return bool(variable_regexp.match(candidate))
 
 
 class Server(protocol.Factory):
