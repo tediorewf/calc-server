@@ -12,7 +12,6 @@ class ProcessClient(protocol.Protocol):
     def __init__(self, server):
         self.server = server
         self.dataForProcessing = ''
-        self.sharedVariables = {}
 
     def connectionMade(self):
         self.server.concurrentClientCount += 1
@@ -77,7 +76,7 @@ class ProcessClient(protocol.Protocol):
                 answer = float('infinity')
         elif operation == '=':
             if operand1.isidentifier():
-                answer = self.sharedVariables[operand1] = parsed_operand2
+                answer = self.server.sharedVariables[operand1] = parsed_operand2
 
         return answer
 
@@ -91,7 +90,7 @@ class ProcessClient(protocol.Protocol):
 
     def __parseOperand(self, operand: str) -> int or None:
         if operand.isidentifier():
-            parsed = self.sharedVariables.get(operand) or None
+            parsed = self.server.sharedVariables.get(operand) or None
         else:
             try:
                 parsed = float(operand)
@@ -104,6 +103,7 @@ class ProcessClient(protocol.Protocol):
 class Server(protocol.Factory):
     def __init__(self):
         self.concurrentClientCount = 0
+        self.sharedVariables = {}
 
     def buildProtocol(self, addr):
         return ProcessClient(self)
